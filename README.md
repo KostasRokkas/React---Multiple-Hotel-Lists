@@ -13,7 +13,7 @@ JSS is framework agnostic. It consists of multiple packages: the core, plugins, 
 ##How to run  the application: 
 1)Git clone the project from GitHub repository and navigate to that repository folder with your terminal.
 2)Run in your terminal the command "yarn start" (after you install yarn)
-3)The program will install all the requirements services for you and run the program
+
 
 
 
