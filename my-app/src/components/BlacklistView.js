@@ -4,43 +4,86 @@ import ListComponent from "./ListComponent";
 
 const styles = createUseStyles({
   form: {
-    backgroundColor: "rgb(255,0,255)",
-    color: "orange",
-    margin: "2rem auto",
-    padding: "1rem",
-    width: "60%",
-    // maxWidth: "70rem",
+    flexWrap: "wrap",
+    justifyContent: "center",
     textAlign: "center",
-    borderRadius: "20%",
+    backgroundColor: "#f2f2f2",
+    padding: "20px",
+    borderRadius: "5px",
+    width: "60%",
+    margin: "auto",
   },
   input: {
-    // display: "block",
+    margin: "2px 0",
     width: "50%",
-    border: "5px solid #ccc",
-    padding: "0.15rem",
-    marginBottom: " 0.5rem",
-    // marginTop: "0.5rem",
-    // marginright: '5.5rem'
+    border: "1px solid #ccc",
+    borderRadius: "5px",
+    boxSizing: "border-box",
+  },
+
+  addList: {
+    backgroundImage: "linear-gradient(-180deg, #00D775, #00BD68)",
+    borderRadius: "5px",
+    boxShadow: "rgba(0, 0, 0, 0.1) 0 2px 4px",
+    color: "#FFFFFF",
+    cursor: "pointer",
+    height: "44px",
+    lineHeight: "44px",
+    padding: "0 20px",
+    textAlign: "center",
+    width: "100%",
+    border: "0",
+  },
+
+  addNewHotel: {
+    backgroundImage: "linear-gradient(-180deg, #00D775, #00BD68)",
+    borderRadius: "5px",
+    boxShadow: "rgba(0, 0, 0, 0.1) 0 2px 4px",
+    color: "#FFFFFF",
+    cursor: "pointer",
+    height: "40px",
+    lineHeight: "40px",
+    padding: "0 20px",
+    border: "0",
+  },
+
+  canselNewHotel: {
+    backgroundColor: "#e62143",
+    borderRadius: "5px",
+    boxShadow: "rgba(0, 0, 0, 0.1) 0 2px 4px",
+    color: "#FFFFFF",
+    cursor: "pointer",
+    height: "40px",
+    lineHeight: "40px",
+    padding: "0 20px",
+    border: "0",
+  },
+
+  btnForm: {
+    margin: "20px 10% 20px 10%",
   },
 });
 
-const BlacklistView = (props) => {
+const BlacklistView = () => {
   const dummyData = [
     [
-      { id: 1, name: "Hilton" },
-      { id: 2, name: "Parklane" },
-      { id: 3, name: "Mainalo" },
-      { id: 4, name: "Mainalo" },
+      { name: "Hilton", address: "mixalakopoulou 38" },
+      { name: "Parklane", address: "niki 15" },
+      { name: "Mainalo", address: "sexioti 22" },
+      { name: "Mainalo", address: "irakleous 5" },
     ],
     [
-      { id: 1, name: "Emerald" },
-      { id: 2, name: "Elite" },
-      { id: 3, name: "Romanda" },
+      { name: "Emerald", address: "dimitrakopoulou 6" },
+      { name: "Elite", address: "joker kai batman gwnia" },
+      { name: "Romanda", address: "el. venizelou 55" },
     ],
   ];
-  const classes = styles();
+  const classes = styles({});
 
   const [hotelsLists, setHotelsLists] = useState([]);
+  const [chosenList, setChosenList] = useState(null);
+  const [showForm, setShowForm] = useState(false);
+  const [form, setForm] = useState({ name: "", address: "" });
 
   const retrieveDummyData = () => {
     let hotels = window.localStorage.getItem("hotels");
@@ -53,39 +96,101 @@ const BlacklistView = (props) => {
 
   useEffect(() => retrieveDummyData(), []);
 
-  const addList = () => {
+  const onAddList = () => {
     const newLists = [...hotelsLists, []];
     setHotelsLists(newLists);
   };
+  const onAddHotel = (hotel) => {
+    const newLists = [...hotelsLists];
+    newLists[chosenList].push(hotel);
+    setHotelsLists(newLists);
+    setChosenList(null);
+    setShowForm(false);
+  };
 
-
-  // PROBLEM!!!!!!!!!!!!!!!!!1
   const deleteList = (index) => {
-    const newLists = hotelsLists.splice(index, 1);
+    const newLists = [...hotelsLists];
+    newLists.splice(index, 1);
+    setHotelsLists(newLists);
+  };
+  const onHotelDelete = (listIndex, hotelIndex) => {
+    const newLists = [...hotelsLists];
+    newLists[listIndex].splice(hotelIndex, 1);
     setHotelsLists(newLists);
   };
 
-  const deleteHotel = (index) => {
-    const deleteOneHotel = hotels.splice(index, 1)
-    
-    
-  }
+  const onCloneList = (index) => {
+    const newLists = [...hotelsLists, hotelsLists[index]];
+    setHotelsLists(newLists);
+  };
+
+  const onSubmit = (event) => {
+    event.preventDefault();
+    onAddHotel({
+      name: form.name,
+      address: form.address,
+    });
+  };
+
   return (
-    <div>
-      <form className={classes.form}>
-        <h2>Add new Hotel</h2>
-        <label htmlFor="name"> Name: </label>
-        <input id="name" type="text" className={classes.input} />
-        <button>Add</button>
-        <button>Cancel</button>
-      </form>
-      <button onClick={addList}>Add list</button>
+    <div className={classes.container}>
+      {showForm && (
+        <div>
+          <form onSubmit={onSubmit} className={classes.form}>
+            <h2>Add new Hotel</h2>
+            <label htmlFor="name" className={classes.label}>
+              Name: </label>
+            <input
+              id="name"
+              type="text"
+              value={form.name}
+              onChange={(e) => setForm({ ...form, name: e.target.value })}
+              className={classes.input}
+            />
+            <br />
+            <label htmlFor="address" className={classes.label}>
+              Address: </label>
+            <input
+              id="address"
+              type="text"
+              value={form.address}
+              onChange={(e) => setForm({ ...form, address: e.target.value })}
+              className={classes.input}
+            />
+            <div className={classes.btnForm}>
+              <button
+                type="submit"
+                onClick={() => onSubmit()}
+                className={classes.addNewHotel}
+              >
+                Add
+              </button>
+              <button
+                className={classes.canselNewHotel}
+                onClick={() => setShowForm(false)}
+              >
+                Cancel
+              </button>
+            </div>
+          </form>
+        </div>
+      )}
+      <button className={classes.addList} onClick={onAddList}>
+        Add list
+      </button>
       {hotelsLists.map((hotelList, index) => {
         return (
           <ListComponent
+            key={index}
             blackList={hotelList}
             index={index}
             onDelete={() => deleteList(index)}
+            onDeleteHotel={(hotelIndex) => onHotelDelete(index, hotelIndex)}
+            onAddHotel={() => {
+              setChosenList(index);
+              setShowForm(true);
+            }}
+            onCloneList={() => onCloneList(index)}
           />
         );
       })}
