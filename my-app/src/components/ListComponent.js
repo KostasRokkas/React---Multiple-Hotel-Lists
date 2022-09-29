@@ -112,16 +112,18 @@ function ListComponent({ blackList, index, onDelete, onDeleteHotel, onAddHotel, 
   return (
     <div className={classes.container}>
       <div>
-        <h5 className={classes.h}>Blacklist No:{index+1}</h5>
+        <h5 className={classes.h}>Blacklist No:{index + 1}</h5>
         <button className={classes.btnDeleteLists} onClick={onDelete}>
           Delete List
         </button>
       </div>
       <table className={classes.table}>
         <thead>
-          <th className={classes.th}>Name</th>
-          <th className={classes.th}>Address</th>
-          <th className={classes.th}>Actions</th>
+          <tr>
+            <th className={classes.th}>Name</th>
+            <th className={classes.th}>Address</th>
+            <th className={classes.th}>Actions</th>
+          </tr>
         </thead>
         <tbody className={classes.tBodyTr}>
           {blackList.map((hotel, index) => {
@@ -142,12 +144,12 @@ function ListComponent({ blackList, index, onDelete, onDeleteHotel, onAddHotel, 
           })}
         </tbody>
       </table>
-        <button className={classes.btnAddHotel} onClick={onAddHotel}>
-          Add Hotel
-        </button>
-        <button className={classes.btnCloneHotel} onClick={onCloneList}>
-          Clone List
-        </button>
+      <button className={classes.btnAddHotel} onClick={onAddHotel}>
+        Add Hotel
+      </button>
+      <button className={classes.btnCloneHotel} onClick={onCloneList}>
+        Clone List
+      </button>
     </div>
   );
 }
