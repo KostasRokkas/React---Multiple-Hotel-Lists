@@ -97,12 +97,12 @@ const styles = createUseStyles({
     border: "0",
   },
 
-  "@media (max-width: 600px)": {
-    container: {
-      flexDirection: "columns",
-      justifyContent: "center",
-      display: "block",
-      padding: "0px 0px 0px 0px",
+  "@media (max-width: 550px)": {
+    btnCloneHotel: {
+      width: "20%",
+    },
+    btnAddHotel: {
+      width: "20%",
     },
   },
 });
